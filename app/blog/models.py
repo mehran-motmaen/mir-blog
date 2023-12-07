@@ -1,5 +1,3 @@
-
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -18,7 +16,9 @@ class Article(models.Model):
         is_online (bool): Indicates whether the article is online or offline.
     """
 
-    title = models.CharField(max_length=255, help_text="Enter the title of the article.")
+    title = models.CharField(
+        max_length=255, help_text="Enter the title of the article."
+    )
     slug = models.SlugField(
         unique=True,
         blank=True,
@@ -65,7 +65,9 @@ class ContactRequest(models.Model):
     email = models.EmailField(help_text="Enter your email address.")
     name = models.CharField(max_length=255, help_text="Enter your name.")
     content = models.TextField(help_text="Enter the content of your contact request.")
-    date = models.DateTimeField(auto_now_add=True, help_text="The date and time of the contact request.")
+    date = models.DateTimeField(
+        auto_now_add=True, help_text="The date and time of the contact request."
+    )
 
     def __str__(self):
         return f"Contact Request from {self.name}"

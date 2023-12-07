@@ -17,17 +17,17 @@ class ContactForm(forms.Form):
     """
 
     email = forms.EmailField(
-        label='Your Email Address',
-        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label="Your Email Address",
+        widget=forms.EmailInput(attrs={"class": "form-control"}),
     )
 
     name = forms.CharField(
         max_length=255,
-        label='Your Name',
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label="Your Name",
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     content = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control'}),
-        label='Your Message',
+        widget=forms.Textarea(attrs={"class": "form-control"}),
+        label="Your Message",
     )

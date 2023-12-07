@@ -18,9 +18,10 @@ class ArticleListView(ListView):
     - context_object_name (str): The name of the variable to use in the template for the list of articles.
     - paginate_by (int): The number of articles to display per page.
     """
+
     model = Article
-    template_name = 'article_list.html'
-    context_object_name = 'articles'
+    template_name = "article_list.html"
+    context_object_name = "articles"
     paginate_by = 5
 
     def get_queryset(self):
@@ -39,18 +40,20 @@ class ArticleDetailView(DetailView):
     - template_name (str): The name of the template to be rendered.
     - context_object_name (str): The name of the variable to use in the template for the article object.
     """
+
     model = Article
-    template_name = 'article_detail.html'
-    context_object_name = 'article'
+    template_name = "article_detail.html"
+    context_object_name = "article"
 
 
 class ContactView(FormView):
     """
     A view for handling contact form submissions and sending emails asynchronously.
     """
-    template_name = 'contact_form.html'
+
+    template_name = "contact_form.html"
     form_class = ContactForm
-    success_url = reverse_lazy('contact_success.html')
+    success_url = reverse_lazy("contact_success.html")
 
     @staticmethod
     def send_contact_email(name, email, content):
@@ -66,11 +69,10 @@ class ContactView(FormView):
         None
         """
         # Email subject
-        subject = 'New Contact Request'
+        subject = "New Contact Request"
 
         # Email message body with name, email, and content
         message = f"Name: {name}\n Reply-To: {email}\nContent: {content}"
-
 
         try:
             # Send email using Django's send_mail function
@@ -98,7 +100,10 @@ class ContactView(FormView):
         Returns:
         None
         """
-        thread = Thread(target=self.send_contact_email, args=(sender_name, sender_email, message_content))
+        thread = Thread(
+            target=self.send_contact_email,
+            args=(sender_name, sender_email, message_content),
+        )
         thread.start()
 
     def form_valid(self, form):
@@ -115,11 +120,13 @@ class ContactView(FormView):
         """
         # Save contact request to the database
         contact_request = ContactRequest.objects.create(
-            email=form.cleaned_data['email'],
-            name=form.cleaned_data['name'],
-            content=form.cleaned_data['content']
+            email=form.cleaned_data["email"],
+            name=form.cleaned_data["name"],
+            content=form.cleaned_data["content"],
         )
 
         # Send contact email in a separate thread
-        self.send_contact_email_threaded(contact_request.name, contact_request.email, contact_request.content)
+        self.send_contact_email_threaded(
+            contact_request.name, contact_request.email, contact_request.content
+        )
         return super().form_valid(form)
