@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
-from .models import Article, ContactRequest
+from .models import Article
 from .forms import ContactForm
 from app import settings
 from threading import Thread
@@ -28,7 +28,8 @@ class ArticleListView(ListView):
         """
         Override the queryset to include only online articles.
         """
-        return Article.objects.filter(is_online=True)
+
+        return self.model.objects.filter(is_online=True)
 
 
 class ArticleDetailView(DetailView):
@@ -44,6 +45,12 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = "article_detail.html"
     context_object_name = "article"
+
+    def get_queryset(self):
+        """
+        Override the queryset to include only online articles.
+        """
+        return self.model.objects.filter(is_online=True)
 
 
 class ContactView(FormView):
@@ -119,14 +126,12 @@ class ContactView(FormView):
         HttpResponse: The HTTP response for the successful form submission.
         """
         # Save contact request to the database
-        contact_request = ContactRequest.objects.create(
-            email=form.cleaned_data["email"],
-            name=form.cleaned_data["name"],
-            content=form.cleaned_data["content"],
-        )
+        contact_request = form.save()
 
         # Send contact email in a separate thread
         self.send_contact_email_threaded(
-            contact_request.name, contact_request.email, contact_request.content
+            contact_request.name,
+            contact_request.email,
+            contact_request.content,
         )
         return super().form_valid(form)

@@ -1,9 +1,13 @@
 from django import forms
+from .models import ContactRequest
 
 
-class ContactForm(forms.Form):
+class ContactForm(forms.ModelForm):
     """
-    A Django form for handling contact information.
+    A Django Form for handling contact requests.
+
+    Model:
+    - ContactRequest: Model for storing contact requests.
 
     Fields:
     - email (EmailField): The email address of the person making the contact request.
@@ -16,18 +20,15 @@ class ContactForm(forms.Form):
     - content: Textarea
     """
 
-    email = forms.EmailField(
-        label="Your Email Address",
-        widget=forms.EmailInput(attrs={"class": "form-control"}),
-    )
-
-    name = forms.CharField(
-        max_length=255,
-        label="Your Name",
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-
-    content = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control"}),
-        label="Your Message",
-    )
+    class Meta:
+        model = ContactRequest
+        fields = [
+            "email",
+            "name",
+            "content",
+        ]
+        widgets = {
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "content": forms.Textarea(attrs={"class": "form-control"}),
+        }
