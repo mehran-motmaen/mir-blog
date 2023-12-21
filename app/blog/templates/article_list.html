@@ -1,64 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+{% extends 'base.html' %}
 
-        h1 {
-            text-align: center;
-        }
+{% block title %}Article List{% endblock %}
 
-        h2 {
-            margin-bottom: 5px;
-        }
-
-        p {
-            margin: 5px 0;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .step-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .step-links a {
-            padding: 5px 10px;
-            margin: 0 2px;
-            border: 1px solid #ddd;
-            background-color: #f1f1f1;
-            color: black;
-            text-decoration: none;
-        }
-
-        .step-links .current {
-            padding: 5px 10px;
-            margin: 0 2px;
-            border: 1px solid #ddd;
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .step-links a:hover {
-            background-color: #ddd;
-        }
-    </style>
-</head>
-<body>
-
+{% block content %}
     <h1>Article List</h1>
-
     {% for article in articles %}
         <h2><a href="{% url 'article_detail' slug=article.slug pk=article.id %}">{{ article.title }}</a></h2>
         <p>{{ article.content|truncatewords:50 }}</p>
@@ -88,5 +33,4 @@
             {% endif %}
         </span>
     </div>
-</body>
-</html>
+{% endblock %}
